@@ -132,4 +132,34 @@ class Enemy(Ship):
             self.lasers.append(laser)
             self.cool_down_counter = 1
 
+def collide(obj1, obj2):
+    offset_x = obj2.x - obj1.x
+    offset_y = obj2.y - obj1.y
+    return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
+
+def main():
+    run = True
+    FPS = 60
+    level = 0
+    lives = 5
+    main_font = pygame.font.SysFont("comicsans", 50)
+    lost_font = pygame.font.SysFont("comicsnas", 60)
+
+    enemies = []
+    wave_length = 5
+    enemy_vel =1
+
+    player_vel = 5
+    laser_vel = 5
+
+    player = Player(300, 630)
+    clock = pygame.time.Clock()
+
+    lost = False
+    lost_count = 0
+
+    def redraw_window():
+        
+
+
 
