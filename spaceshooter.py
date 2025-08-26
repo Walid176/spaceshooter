@@ -105,6 +105,10 @@ class Player(Ship):
                         objs.remove(obj)
                         if laser in self.lasers:
                             self.lasers.remove(laser)
-    
+    def draw(self, window):
+         super().draw(window)
+         self.healthbar(window)
+
+    def healthbar(self, window):
 
 
