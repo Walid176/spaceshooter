@@ -1,6 +1,5 @@
 import pygame
 import os
-import time
 import random
 pygame.font.init()
 
@@ -13,14 +12,14 @@ Red_Space_Ship = pygame.image.load(os.path.join("assets", "pixel_ship_red_small.
 Green_Space_Ship = pygame.image.load(os.path.join("assets", "pixel_ship_green_small.png"))
 Blue_Space_Ship = pygame.image.load(os.path.join("assets", "pixel_ship_blue_small.png"))
 
-Yellow_space_Ship = pygame.image.load(os.path.join("assets", "pixel_ship_yellow.png"))
+Yellow_space_Ship = pygame.image.load(os.path.join("assets", "playerShip1_orange.png"))
 
 Red_Laser = pygame.image.load(os.path.join("assets", "pixel_laser_red.png"))
 Blue_Laser = pygame.image.load(os.path.join("assets", "pixel_laser_blue.png"))
 Green_Laser = pygame.image.load(os.path.join("assets", "pixel_laser_green.png"))
 Yellow_Laser = pygame.image.load(os.path.join("assets", "pixel_laser_yellow.png"))
 
-BG = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background-black.png"))), (WIDTH, HEIGHT)
+BG = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background-black.png")), (WIDTH, HEIGHT))
 
 class Laser:
     def __init__(self, x, y, img):
@@ -200,13 +199,13 @@ def main():
             if event.type == pygame.QUIT:
                 quit()
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_a] and player.x - player_vel > 0: 
+        if keys[pygame.K_LEFT] and player.x - player_vel > 0: 
             player.x -= player_vel
-        if keys[pygame.K_d] and player.x + player_vel + player.get_width() < WIDTH: 
+        if keys[pygame.K_RIGHT] and player.x + player_vel + player.get_width() < WIDTH: 
             player.x += player_vel
-        if keys[pygame.K_w] and player.y - player_vel > 0:
+        if keys[pygame.K_UP] and player.y - player_vel > 0:
             player.y -= player_vel
-        if keys[pygame.K_s] and player.y + player_vel + player.get_height() + 15 < HEIGHT: 
+        if keys[pygame.K_DOWN] and player.y + player_vel + player.get_height() + 15 < HEIGHT: 
             player.y += player_vel
         if keys[pygame.K_SPACE]:
             player.shoot()
@@ -226,7 +225,18 @@ def main():
                 enemies.remove(enemy)
 
         player.move_lasers(-laser_vel, enemies)
-
-
-
-
+def main_menu():
+    title_font = pygame.font.SysFont("comicsans", 70)
+    run = True
+    while run:
+        WIN.blit(BG, (0, 0))
+        title_label = title_font.render("Click to begin...", 1, (255, 255, 255))
+        WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 350))
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                main()
+    pygame.quit()
+main_menu()
