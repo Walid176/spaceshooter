@@ -1,6 +1,7 @@
 import pygame
 import os
 import random
+from db import add_score, get_highscores, delete_score
 pygame.font.init()
 
 WIDTH = 750
@@ -184,6 +185,8 @@ def main():
 
         if lost:
             if lost_count > FPS * 3:
+                score = level * 100
+                add_score("Player1", score)
                 run = False
             else:
                 continue
@@ -227,16 +230,29 @@ def main():
         player.move_lasers(-laser_vel, enemies)
 def main_menu():
     title_font = pygame.font.SysFont("comicsans", 70)
+    small_font = pygame.font.SysFont("comicsans", 40)
     run = True
     while run:
         WIN.blit(BG, (0, 0))
         title_label = title_font.render("Click to begin...", 1, (255, 255, 255))
+        delete_font = pygame.font.SysFont("comicsnas", 50)
+        delete_label =  delete_font.render("Press D to Delete Scores", 1, (255, 100, 100))
+        WIN.blit(delete_label, (WIDTH/2 - delete_label.get_width()/2, 250))
         WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 350))
+        scores = get_highscores(5)
+        y = 300
+        for name, score in scores:
+            score_label = small_font.render(f"{name}: {score}", 1, (255, 255, 0))
+            WIN.blit(score_label, (WIDTH/2 - score_label.get_width()/2, y))
+            y+= 50
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 main()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_d:
+                    delete_score()
     pygame.quit()
 main_menu()
